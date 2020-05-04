@@ -11,3 +11,11 @@ autoJoin: true
 
 # Location on disk for where to store various bot information.
 dataPath: "storage"
+
+# The event types the bot will check for in the power levels to determine
+# if the user can do something. These are all assumed to be state events.
+# The events themselves do not have to exist, though if you want to change
+# which power level is required they need to be defined in the m.room.power_levels
+permissionCheck:
+  # The permission check for creating/updating reminders in a room.
+  roomReminders: "io.t2bot.ics_reminders"
