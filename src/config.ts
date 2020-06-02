@@ -5,6 +5,9 @@ interface IConfig {
     accessToken: string;
     autoJoin: boolean;
     dataPath: string;
+    permissionCheck: {
+        roomReminders: string;
+    };
 }
 
 export default <IConfig>config;

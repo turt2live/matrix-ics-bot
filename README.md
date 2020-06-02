@@ -7,13 +7,13 @@ Help: [#matrix-ics-bot:t2bot.io](https://matrix.to/#/#matrix-ics-bot:t2bot.io)
 
 ## Running / Building
 
-Run `npm install` to get the dependencies.
+Run `yarn install` to get the dependencies.
 
-To build it: `npm run build`.
+To build it: `yarn build`.
 
-To run it: `npm run start:dev`
+To run it: `yarn start:dev`
 
-To check the lint: `npm run lint`
+To check the lint: `yarn lint`
 
 ### Configuration
 
