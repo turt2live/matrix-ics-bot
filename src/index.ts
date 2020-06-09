@@ -210,8 +210,9 @@ function activeNotDeletedReminders(): Reminder[] {
             await ics.parse();
             const reminder = await Reminder.create(ics, roomId, client);
             activeReminders.push(reminder);
-            const textReply = `Created reminder with ID ${reminder.uid} occurring next: ${reminder.ics.nextEvent.fromNow()}\n\nTo edit the text, open a DM with me and say \`!edit ${roomId} ${reminder.uid} <new text here>\`\n\nPreview: ${reminder.summaryText}`;
-            const htmlReply = `Created reminder with ID <code>${reminder.uid}</code> occurring next: ${reminder.ics.nextEvent.fromNow()}<br/><br/>To edit the text, open a DM with me and say <code>!edit ${sanitizeHtml(roomId)} ${reminder.uid} &lt;new text here&gt;</code><br /><br />Preview: ${reminder.summaryHtml}`;
+            const next = reminder.ics.nextEvent ? reminder.ics.nextEvent.fromNow() : 'Unknown';
+            const textReply = `Created reminder with ID ${reminder.uid} occurring next: ${next}\n\nTo edit the text, open a DM with me and say \`!edit ${roomId} ${reminder.uid} <new text here>\`\n\nPreview: ${reminder.summaryText}`;
+            const htmlReply = `Created reminder with ID <code>${reminder.uid}</code> occurring next: ${next}<br/><br/>To edit the text, open a DM with me and say <code>!edit ${sanitizeHtml(roomId)} ${reminder.uid} &lt;new text here&gt;</code><br /><br />Preview: ${reminder.summaryHtml}`;
             const reply = RichReply.createFor(roomId, ev, textReply, htmlReply);
             reply['msgtype'] = 'm.notice';
             await client.sendMessage(roomId, {
