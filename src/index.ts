@@ -143,9 +143,10 @@ function activeNotDeletedReminders(): Reminder[] {
                 const reminders = activeNotDeletedReminders().filter(r => r.roomId === targetRoomId);
                 await client.sendNotice(roomId, `${reminders.length} reminders:`);
                 for (const reminder of reminders) {
+                    const next = reminder.ics.nextEvent ? reminder.ics.nextEvent.fromNow() : 'Unknown';
                     await client.sendMessage(roomId, {
-                        body: `Reminder \`${reminder.uid}\`\nNext: ${reminder.ics.nextEvent.fromNow()}`,
-                        formatted_body: `Reminder <code>${reminder.uid}</code><br />Next: ${reminder.ics.nextEvent.fromNow()}`,
+                        body: `Reminder \`${reminder.uid}\`\nNext: ${next}`,
+                        formatted_body: `Reminder <code>${reminder.uid}</code><br />Next: ${next}`,
                         format: 'org.matrix.custom.html',
                         msgtype: 'm.notice',
                     });
