@@ -16,7 +16,9 @@ export class ICS {
     }
 
     public get nextEvent(): Moment | null {
-        return this.vevent.occurrences({start: moment.tz(), take: 1}).toArray()[0].date || null;
+        const occurrence = this.vevent.occurrences({start: moment.tz(), take: 1}).toArray()[0];
+        if (!occurrence) return null;
+        return occurrence.date || null;
     }
 
     public get nextNextEvent(): Moment | null {
