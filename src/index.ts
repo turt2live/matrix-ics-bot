@@ -59,9 +59,9 @@ function activeNotDeletedReminders(): Reminder[] {
         });
     });
 
-    async function tryPermissions(roomId: string, ev: any): Promise<boolean> {
+    async function tryPermissions(inRoomId: string, roomId: string, ev: any): Promise<boolean> {
         // Check permissions
-        const hasPermission = await client.userHasPowerLevelFor(ev['sender'], roomId, config.permissionCheck.roomReminders, true);
+        const hasPermission = await client.userHasPowerLevelFor(ev['sender'], inRoomId, config.permissionCheck.roomReminders, true);
         if (!hasPermission) {
             const textReply = "Sorry, you don't have permission to use reminders.";
             const reply = RichReply.createFor(roomId, ev, textReply, textReply);
@@ -92,7 +92,7 @@ function activeNotDeletedReminders(): Reminder[] {
 
         const prefixes = ["!edit", "!delete", "!list", "!help"];
         if (prefixes.some(p => ev['content']['body'].startsWith(p))) {
-            if (!(await tryPermissions(roomId, ev))) return;
+            if (!(await tryPermissions(roomId, roomId, ev))) return;
         } else {
             return; // not a command
         }
@@ -109,7 +109,7 @@ function activeNotDeletedReminders(): Reminder[] {
                     await client.sendMessage(roomId, {...reply, msgtype: 'm.notice'});
                 } else {
                     const targetRoomId = await client.resolveRoom(targetRoomRef);
-                    if (!(await tryPermissions(targetRoomId, ev))) return;
+                    if (!(await tryPermissions(targetRoomId, roomId, ev))) return;
                     const commandToRemove = `!edit ${targetRoomRef} ${uid}`;
                     const newText = ev['content']['body'].replace(commandToRemove, '').trim();
                     let newHtml = sanitizeHtml(newText);
@@ -139,7 +139,7 @@ function activeNotDeletedReminders(): Reminder[] {
                     targetRoomRef = roomId;
                 }
                 const targetRoomId = await client.resolveRoom(targetRoomRef);
-                if (!(await tryPermissions(targetRoomId, ev))) return;
+                if (!(await tryPermissions(targetRoomId, roomId, ev))) return;
                 const reminders = activeNotDeletedReminders().filter(r => r.roomId === targetRoomId);
                 await client.sendNotice(roomId, `${reminders.length} reminders:`);
                 for (const reminder of reminders) {
@@ -166,7 +166,7 @@ function activeNotDeletedReminders(): Reminder[] {
                     return;
                 }
                 const targetRoomId = await client.resolveRoom(targetRoomRef);
-                if (!(await tryPermissions(targetRoomId, ev))) return;
+                if (!(await tryPermissions(targetRoomId, roomId, ev))) return;
                 const reminder = activeNotDeletedReminders().find(r => r.roomId === targetRoomId && r.uid === uid);
                 if (!reminder) {
                     const text = "Reminder not found. Try !help for more information";
@@ -204,7 +204,7 @@ function activeNotDeletedReminders(): Reminder[] {
         if (!ev['content']['body'].toLowerCase().endsWith('.ics')) return;
 
         // Check permissions
-        if (!(await tryPermissions(roomId, ev))) return;
+        if (!(await tryPermissions(roomId, roomId, ev))) return;
 
         try {
             const ics = new ICS(ev['content']['url'], client);
