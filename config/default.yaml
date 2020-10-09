@@ -19,3 +19,7 @@ dataPath: "storage"
 permissionCheck:
   # The permission check for creating/updating reminders in a room.
   roomReminders: "io.t2bot.ics_reminders"
+
+# The people who can always use commands in any room regardless of permission level.
+admins:
+  - "@you:example.org"

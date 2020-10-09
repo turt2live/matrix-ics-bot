@@ -60,6 +60,10 @@ function activeNotDeletedReminders(): Reminder[] {
     });
 
     async function tryPermissions(inRoomId: string, roomId: string, ev: any): Promise<boolean> {
+        if ((config.admins || []).includes(ev['sender'])) {
+            return true;
+        }
+
         // Check permissions
         const hasPermission = await client.userHasPowerLevelFor(ev['sender'], inRoomId, config.permissionCheck.roomReminders, true);
         if (!hasPermission) {

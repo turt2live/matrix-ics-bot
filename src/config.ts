@@ -8,6 +8,7 @@ interface IConfig {
     permissionCheck: {
         roomReminders: string;
     };
+    admins: string[];
 }
 
 export default <IConfig>config;
