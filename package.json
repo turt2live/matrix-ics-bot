@@ -33,7 +33,7 @@
     "js-yaml": "^3.13.1",
     "matrix-bot-sdk": "^0.5.4",
     "moment": "^2.29.2",
-    "moment-timezone": "^0.5.31",
+    "moment-timezone": "^0.5.35",
     "sanitize-html": "^2.3.2",
     "uuid": "^8.0.0"
   },
